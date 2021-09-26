@@ -6,6 +6,8 @@ var numberOfParts = 10;
 
 var myReq;
 
+var colors = undefined;
+
 function stopDrawing(){
 	window.cancelAnimationFrame(myReq)
 }
@@ -32,8 +34,23 @@ function setLineWidth(width){ lineWidth = width; }
 
 
 function drawSinusToCosinus(ctx, iteration){
+	if (colors == undefined)
+	{
+		colors =  Array.apply(null, Array(numberOfParts)).map(function () {getRandomColor()});
+	}
+
+	if(drawingColor == "rainbow"){
+		var color = getRandomColor();
+		let newLength = colors.push(color);
+		colors.shift();
+	}
+
 	for(i = 0; i < numberOfParts; i++){
-		drawSingleIteration(ctx, iteration + i, drawingColor, drawingShape);
+		if(drawingColor == "rainbow"){
+			drawSingleIteration(ctx, iteration + i, colors[i], drawingShape);
+		}else{
+			drawSingleIteration(ctx, iteration + i, drawingColor, drawingShape);
+		}
 	}
 }
 
@@ -69,4 +86,28 @@ function drawSingleIteration(ctx, iteration, color, shape){
 	ctx.stroke();
 }
 
+function getRandomInt(max) {
+	return Math.floor(Math.random() * max);
+}
 
+function getRandomColor(){
+	var r = getRandomInt(255);
+	var g = getRandomInt(255);
+	var b = getRandomInt(255);
+	return fullColorHex(r,g,b);
+}
+
+var rgbToHex = function (rgb) { 
+	var hex = Number(rgb).toString(16);
+	if (hex.length < 2) {
+		 hex = "0" + hex;
+	}
+	return hex;
+  };
+
+  var fullColorHex = function(r,g,b) {   
+	var red = rgbToHex(r);
+	var green = rgbToHex(g);
+	var blue = rgbToHex(b);
+	return "#"+red+green+blue;
+  };
