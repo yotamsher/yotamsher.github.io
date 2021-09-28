@@ -8,9 +8,14 @@ var myReq;
 
 var colors = undefined;
 
-function stopDrawing(){
-	window.cancelAnimationFrame(myReq)
+function startDrawing(){
+	myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 30-drwawingSpeed );
 }
+
+function stopDrawing(){
+	window.clearInterval(myTimer);
+}
+
 
 function drawFunction()
 {
@@ -21,13 +26,15 @@ function drawFunction()
 	ctx.save();
 	drawSinusToCosinus(ctx, iteration);
 	ctx.restore();
-	myReq = window.requestAnimationFrame(drawFunction);
 }
 var drawingShape = "triangle";
 function setDrawingShape(shape){ drawingShape = shape; }
 
 var drawingColor = "azure";
 function setDrawingColor(color){ drawingColor = color; }
+
+var drwawingSpeed = 15;
+function setDrawingSpeed(speed){ drwawingSpeed = speed; }
 
 var lineWidth = 1;
 function setLineWidth(width){ lineWidth = width; }
@@ -80,7 +87,6 @@ function drawSingleIteration(ctx, iteration, color, shape){
 		ctx.lineTo(endX, endY);
 	}
 	else if(shape == "circle"){
-	//	ctx.moveTo(startX, 350);
 		ctx.arc(startX, 350, Math.abs((endY - startY)/2),0, 2 * Math.PI) ;
 	}
 	ctx.stroke();
