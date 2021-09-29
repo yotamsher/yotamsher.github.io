@@ -1,0 +1,76 @@
+<HTML>
+<head>
+	<title>Tennis</title>
+	<script type="text/javascript" src="./tennis.js"></script>
+</head>
+<body>
+	<style type="text/css">
+		button {color:blue; background-color: aqua; width: 30%; height: 40px;}
+	</style>
+<button width="300" onclick="myFunction()">Run animation</button><br/>
+<div id="shapes">
+	<input type="radio" name="shape" value="line" id="myRadio1">vertical line
+	<input type="radio" name="shape" value="triangle" id="myRadio2">triangle
+	<input type="radio" name="shape" value="circle" id="myRadio3" checked >circle
+</div>
+<div id="colors">
+	<input type="radio" name="color" value="red" id="myRadio4">red
+	<input type="radio" name="color" value="green" id="myRadio5" checked>green
+	<input type="radio" name="color" value="blue" id="myRadio6" >blue
+	<input type="radio" name="color" value="gray" id="myRadio7" >gray
+	<input type="radio" name="color" value="black" id="myRadio8" >black
+	<input type="radio" name="color" value="pink" id="myRadio9" >pink
+	<input type="radio" name="color" value="yellow" id="myRadio10" >yellow
+	<input type="radio" name="color" value="rainbow" id="myRadio11" >rainbow
+</div>
+<div id = "lWidth">
+    <label for="lineWidth">Line Width(1 - 5):</label>
+    <input type="range" id="lineWidth" name="lineWidth" min="1" max="5" value="2">
+</div>
+<div id = "speed">
+    <label for="drawSpeed">speed:</label>
+    <input type="range" id="drawSpeed" name="drawSpeed" min="5" max="30" value="5">
+</div>
+
+
+<button width="30" onclick="stopDrawing()">Stop animation</button><br/>
+<!--<button onclick="myFunction()">Run Once</button><br/>-->
+
+<canvas id="canvas2" width="1800" height="1000" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+function myFunction(){
+	const parent = document.getElementById('shapes');
+	let child_nodes = parent.querySelectorAll('input[type=radio]');
+
+	for (let checkbox of child_nodes) {
+		if(checkbox.checked == true)
+		{
+			setDrawingShape(checkbox.value);
+		}
+	}
+
+	const colorDiv = document.getElementById('colors');
+	let color_nodes = colorDiv.querySelectorAll('input[type=radio]');
+
+	for (let checkbox of color_nodes) {
+		if(checkbox.checked == true)
+		{
+			setDrawingColor(checkbox.value);
+		}
+	}
+
+	var lWidth = document.getElementById("lineWidth");
+	setLineWidth(lWidth.valueAsNumber);
+
+    var drawingSpeed = document.getElementById("drawSpeed");
+    setDrawingSpeed(drawingSpeed.valueAsNumber);
+
+//	myVar = setTimeout(startDrawing, 100)
+	startDrawing();
+}
+
+</script> 
+</body>
+</HTML>
