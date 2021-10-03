@@ -14,34 +14,7 @@ var colors = undefined;
 var directionInDegrees = getRandomInt(180) - 90;
 var ctx;
 var myTimer;
-function startDrawing(){
-	initAnimation();
-	myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 30-drwawingSpeed );
-}
 
-function initAnimation(){
-	c = document.getElementById("canvas2");
-	ctx = c.getContext("2d");
-//	ctx.translate(x0,y0);
-	directionInDegrees = getRandomInt(180) - 90;
-
-}
-
-function stopDrawing(){
-	window.clearInterval(myTimer);
-}
-
-var xDirection = 1;
-function drawFunction()
-{
-	
-	iteration=iteration+xDirection;
-	//var ctx = c.getContext("2d");
-	ctx.clearRect(0, 0, 1800, 1000);
-	ctx.save();
-	drawTennis(ctx, iteration);
-	ctx.restore();
-}
 var drawingShape = "triangle";
 function setDrawingShape(shape){ drawingShape = shape; }
 
@@ -53,19 +26,46 @@ function setDrawingSpeed(speed){
 	drwawingSpeed = speed; 
 	if(myTimer){
 		window.clearInterval(myTimer);
-		myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 30-drwawingSpeed );
+		myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 100-drwawingSpeed );
 	}
 }
 
 var lineWidth = 1;
 function setLineWidth(width){ lineWidth = width; }
 
-function drawTennis(ctx, iteration){
-	drawSingleIteration(ctx, iteration, drawingColor, drawingShape);
+function startDrawing(){
+	initAnimation();
+
+	if(myTimer){
+		window.clearInterval(myTimer);
+	}
+	myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 100-drwawingSpeed );
 }
 
+function initAnimation(){
+	c = document.getElementById("canvas2");
+	ctx = c.getContext("2d");
+//	ctx.translate(x0,y0);
+	directionInDegrees = getRandomInt(180) - 90;
+}
 
-function drawSinusToCosinus(ctx, iteration){
+function stopDrawing(){
+	window.clearInterval(myTimer);
+}
+
+var xDirection = 1;
+
+function drawFunction()
+{
+	
+	iteration=iteration+xDirection;
+	ctx.clearRect(0, 0, 1800, 1000);
+	ctx.save();
+	drawTennis(ctx, iteration);
+	ctx.restore();
+}
+
+function drawTennis(ctx, iteration){
 	if (colors == undefined)
 	{
 		colors =  Array.apply(null, Array(numberOfParts)).map(function () {getRandomColor()});
@@ -76,12 +76,13 @@ function drawSinusToCosinus(ctx, iteration){
 		let newLength = colors.push(color);
 		colors.shift();
 	}
-
+	var item = iteration;
 	for(i = 0; i < numberOfParts; i++){
+		item = item+xDirection;
 		if(drawingColor == "rainbow"){
-			drawSingleIteration(ctx, iteration + i, colors[i], drawingShape);
+			drawSingleIteration(ctx, item, colors[i], drawingShape);
 		}else{
-			drawSingleIteration(ctx, iteration + i, drawingColor, drawingShape);
+			drawSingleIteration(ctx, item, drawingColor, drawingShape);
 		}
 	}
 }
@@ -131,29 +132,3 @@ function drawSingleIteration(ctx, iteration, color, shape){
 	}
 	ctx.stroke();
 }
-
-function getRandomInt(max) {
-	return Math.floor(Math.random() * max);
-}
-
-function getRandomColor(){
-	var r = genndomInt(255);
-	var g = getRandomInt(255);
-	var b = getRandomInt(255);
-	return fullColorHex(r,g,b);
-}
-
-var rgbToHex = function (rgb) { 
-	var hex = Number(rgb).toString(16);
-	if (hex.length < 2) {
-		 hex = "0" + hex;
-	}
-	return hex;
-  };
-
-  var fullColorHex = function(r,g,b) {   
-	var red = rgbToHex(r);
-	var green = rgbToHex(g);
-	var blue = rgbToHex(b);
-	return "#"+red+green+blue;
-  };
