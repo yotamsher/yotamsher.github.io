@@ -13,6 +13,7 @@ var colors = undefined;
 
 var directionInDegrees = getRandomInt(180) - 90;
 var ctx;
+var myTimer;
 function startDrawing(){
 	initAnimation();
 	myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 30-drwawingSpeed );
@@ -48,7 +49,13 @@ var drawingColor = "azure";
 function setDrawingColor(color){ drawingColor = color; }
 
 var drwawingSpeed = 15;
-function setDrawingSpeed(speed){ drwawingSpeed = speed; }
+function setDrawingSpeed(speed){ 
+	drwawingSpeed = speed; 
+	if(myTimer){
+		window.clearInterval(myTimer);
+		myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 30-drwawingSpeed );
+	}
+}
 
 var lineWidth = 1;
 function setLineWidth(width){ lineWidth = width; }

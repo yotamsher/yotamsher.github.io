@@ -3,7 +3,7 @@
 	<title>Tennis</title>
 	<script type="text/javascript" src="./tennis.js"></script>
 </head>
-<body>
+<body onload="onLoad()">
 	<style type="text/css">
 		button {color:blue; background-color: aqua; width: 30%; height: 40px;}
 	</style>
@@ -40,6 +40,39 @@
 Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
+function onLoad(){
+	var range_slider = document.getElementById("drawSpeed");
+	range_slider.addEventListener('mouseup', function() {
+		if (this.value > 5) {
+			setDrawingSpeed(this.valueAsNumber);
+		}
+	});
+	var width_slider = document.getElementById("lineWidth");
+	width_slider.addEventListener('mouseup', function() {
+		setLineWidth(this.valueAsNumber);
+	});
+
+	let shape_nodes = document.getElementById('shapes').querySelectorAll('input[type=radio]');;
+	for (let checkbox of shape_nodes) {
+		checkbox.addEventListener('click', function (event) {
+		if (event.target) {
+			setDrawingShape(event.target.value);
+    	}
+		});
+	}
+
+	let color_nodes = document.getElementById('colors').querySelectorAll('input[type=radio]');;
+	for (let checkbox of color_nodes) {
+		checkbox.addEventListener('click', function (event) {
+		if (event.target) {
+			setDrawingColor(event.target.value);
+    	}
+		});
+	}
+
+
+}
+
 function myFunction(){
 	const parent = document.getElementById('shapes');
 	let child_nodes = parent.querySelectorAll('input[type=radio]');
@@ -67,7 +100,6 @@ function myFunction(){
     var drawingSpeed = document.getElementById("drawSpeed");
     setDrawingSpeed(drawingSpeed.valueAsNumber);
 
-//	myVar = setTimeout(startDrawing, 100)
 	startDrawing();
 }
 
