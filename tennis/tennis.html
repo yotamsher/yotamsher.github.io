@@ -10,20 +10,20 @@
 	</style>
 <button width="300" onclick="myFunction()">Run animation</button><br/>
 <div id="shapes">
-	<input type="radio" name="shape" value="line" id="myRadio1">vertical line
-	<input type="radio" name="shape" value="triangle" id="myRadio2">triangle
-	<input type="radio" name="shape" value="circle" id="myRadio3" checked >circle
-	<input type="radio" name="shape" value="heart" id="myRadio4" checked >heart
+	<input type="radio" name="shape" value="line" id="line">vertical line
+	<input type="radio" name="shape" value="triangle" id="triangle">triangle
+	<input type="radio" name="shape" value="circle" id="circle" checked >circle
+	<input type="radio" name="shape" value="heart" id="heart" >heart
 </div>
 <div id="colors">
-	<input type="radio" name="color" value="red" id="myRadio4">red
-	<input type="radio" name="color" value="green" id="myRadio5" checked>green
-	<input type="radio" name="color" value="blue" id="myRadio6" >blue
-	<input type="radio" name="color" value="gray" id="myRadio7" >gray
-	<input type="radio" name="color" value="black" id="myRadio8" >black
-	<input type="radio" name="color" value="pink" id="myRadio9" >pink
-	<input type="radio" name="color" value="yellow" id="myRadio10" >yellow
-	<input type="radio" name="color" value="rainbow" id="myRadio11" >rainbow
+	<input type="radio" name="color" value="red" id="red">red
+	<input type="radio" name="color" value="green" id="green" checked>green
+	<input type="radio" name="color" value="blue" id="blue" >blue
+	<input type="radio" name="color" value="gray" id="gray" >gray
+	<input type="radio" name="color" value="black" id="black" >black
+	<input type="radio" name="color" value="pink" id="pink" >pink
+	<input type="radio" name="color" value="yellow" id="yellow" >yellow
+	<input type="radio" name="color" value="rainbow" id="rainbow" >rainbow
 </div>
 <div id = "lWidth">
     <label for="lineWidth">Line Width(1 - 5):</label>
@@ -71,7 +71,26 @@ function onLoad(){
     	}
 		});
 	}
-
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const shape = urlParams.get('shape');
+	if(shape){
+		var the_radio = document.getElementById(shape);
+		if(the_radio){
+			the_radio.checked = true;
+		}
+	}
+	const color = urlParams.get('color');
+	if(color){
+		var the_radio = document.getElementById(color);
+		if(the_radio){
+			the_radio.checked = true;
+		}
+	}
+	const should_start = urlParams.get('start');
+	if(should_start){
+		myFunction();
+	}
 
 }
 
