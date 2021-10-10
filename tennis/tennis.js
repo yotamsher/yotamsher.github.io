@@ -159,11 +159,11 @@ function drawSingleIteration(ctx, iteration, color, shape){
 		ctx.arc(startX, startY, 20,0, 2 * Math.PI) ;
 	}
 	else if(shape == "heart"){
-		ctx.arc(startX-10, startY, 10, Math.PI, 2 * Math.PI) ;
-		ctx.arc(startX+10, startY, 10, Math.PI, 2 * Math.PI) ;
-		ctx.moveTo(startX-20, startY);
-		ctx.lineTo(startX, startY + 20);
-		ctx.lineTo(startX+20, startY);
+		ctx.arc(startX-20, startY, 20, Math.PI, 2 * Math.PI) ;
+		ctx.arc(startX+20, startY, 20, Math.PI, 2 * Math.PI) ;
+		ctx.moveTo(startX-40, startY);
+		ctx.lineTo(startX, startY + 40);
+		ctx.lineTo(startX+40, startY);
 	}
 	ctx.stroke();
 }
