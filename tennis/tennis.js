@@ -44,6 +44,15 @@ function startDrawing(){
 	myTimer = setInterval(function(){window.requestAnimationFrame(drawFunction);}, 100-drwawingSpeed );
 }
 
+function handleCanvasSize(){
+	const canvas = document.getElementById("canvas2");
+	ctx = canvas.getContext("2d");
+	canvas.width = window.innerWidth - 100;
+	canvas.height = window.innerHeight - 200;
+	clientHeight = ctx.canvas.clientHeight;
+	clientWidth = ctx.canvas.clientWidth;
+}
+
 function initAnimation(){
 	c = document.getElementById("canvas2");
 	ctx = c.getContext("2d");
@@ -51,7 +60,7 @@ function initAnimation(){
 	clientWidth = ctx.canvas.clientWidth;
 	//	ctx.translate(x0,y0);
 	console.log("canvas client area: " + clientWidth + "x" + clientHeight);
-	directionInDegrees = getRandomInt(180) - 90;
+	directionInDegrees = getRandomInt(170) - 85;
 }
 
 function stopDrawing(){
@@ -92,6 +101,14 @@ function drawTennis(ctx, iteration){
 	}
 }
 
+function getNewDirection(oldDirectionInDegrees){
+   var newDirection = -oldDirectionInDegrees + getRandomInt(6)-3;
+   if( Math.abs(newDirection) > 87 ){
+	   newDirection= Math.sign(newDirection) * 87
+   }
+   return newDirection;
+}
+
 function drawSingleIteration(ctx, iteration, color, shape){
 	var direction = directionInDegrees / 360 *(2 * Math.PI);
 	var startX = xScale * iteration;
@@ -102,7 +119,8 @@ function drawSingleIteration(ctx, iteration, color, shape){
 		xDirection = -xDirection;
 		x0 = startX;
 		y0 = startY;
-		directionInDegrees = -directionInDegrees;
+		directionInDegrees = getNewDirection(directionInDegrees);
+		console.log("directionInDegrees="+directionInDegrees);
 	}
 	if((startY > clientHeight-5 && (directionInDegrees * xDirection) > 0) || (startY < 10 && (directionInDegrees * xDirection) < 0))
 	{
@@ -110,7 +128,8 @@ function drawSingleIteration(ctx, iteration, color, shape){
 		x0 = startX;
 		y0 = startY;
 		//ctx.translate(x0, y0);
-		directionInDegrees = -directionInDegrees;
+		directionInDegrees = getNewDirection(directionInDegrees);
+		console.log("directionInDegrees="+directionInDegrees);
 		//iteration = 0;
 	}
 

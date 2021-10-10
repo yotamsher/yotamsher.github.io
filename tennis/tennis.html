@@ -80,12 +80,10 @@ function onLoad(){
 		});
 	}
 	
-	const canvas = document.getElementById("canvas2");
-	canvas.width = window.innerWidth - 100;
-	canvas.height = window.innerHeight - 200;
+	handleCanvasSize();
+
 	window.addEventListener('resize', function(event){
-		canvas.width = window.innerWidth - 100;
-		canvas.height = window.innerHeight - 200;
+		handleCanvasSize();
 	});
 
 	const queryString = window.location.search;
