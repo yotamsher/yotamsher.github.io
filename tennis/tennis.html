@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <HTML>
 <head>
 	<title>Tennis</title>
@@ -6,9 +7,19 @@
 </head>
 <body onload="onLoad()">
 	<style type="text/css">
-		button {color:blue; background-color: aqua; width: 30%; height: 40px;}
+		button {color:black; background-color: aqua; width: 45%; height: 50px;}
+		canvas2 {
+ 			background-color: red;
+			border:1px solid #d3d3d3;
+			display: block;
+			position: sticky;
+			width: 700;
+			height: 1000;
+		}
 	</style>
-<button width="300" onclick="myFunction()">Run animation</button><br/>
+<button  onclick="myFunction()">Run animation</button>
+<button  onclick="stopDrawing()">Stop animation</button><br/>
+<!--<button onclick="myFunction()">Run Once</button><br/>-->
 <div id="shapes">
 	<input type="radio" name="shape" value="line" id="line">vertical line
 	<input type="radio" name="shape" value="triangle" id="triangle">triangle
@@ -35,11 +46,8 @@
 </div>
 
 
-<button width="30" onclick="stopDrawing()">Stop animation</button><br/>
-<!--<button onclick="myFunction()">Run Once</button><br/>-->
 
-<canvas id="canvas2" width="1800" height="1000" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
+<canvas id="canvas2" style="border:1px solid #ff0000;">Your browser does not support the HTML5 canvas tag.</canvas>
 
 <script>
 function onLoad(){
@@ -71,6 +79,15 @@ function onLoad(){
     	}
 		});
 	}
+	
+	const canvas = document.getElementById("canvas2");
+	canvas.width = window.innerWidth - 100;
+	canvas.height = window.innerHeight - 200;
+	window.addEventListener('resize', function(event){
+		canvas.width = window.innerWidth - 100;
+		canvas.height = window.innerHeight - 200;
+	});
+
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const shape = urlParams.get('shape');

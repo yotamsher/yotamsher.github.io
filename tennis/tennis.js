@@ -1,8 +1,8 @@
 var iteration = 0
 
-var xScale = 5;
+var xScale = 10;
 var yScale = 350;
-var numberOfParts = 7;
+var numberOfParts = 10;
 
 var x0 = 0;
 var y0 = 350;
@@ -13,6 +13,8 @@ var colors = undefined;
 
 var directionInDegrees = getRandomInt(180) - 90;
 var ctx;
+var clientWidth = 500;
+var clientHeight = 500;
 var myTimer;
 
 var drawingShape = "triangle";
@@ -45,7 +47,10 @@ function startDrawing(){
 function initAnimation(){
 	c = document.getElementById("canvas2");
 	ctx = c.getContext("2d");
-//	ctx.translate(x0,y0);
+	clientHeight = ctx.canvas.clientHeight;
+	clientWidth = ctx.canvas.clientWidth;
+	//	ctx.translate(x0,y0);
+	console.log("canvas client area: " + clientWidth + "x" + clientHeight);
 	directionInDegrees = getRandomInt(180) - 90;
 }
 
@@ -59,7 +64,7 @@ function drawFunction()
 {
 	
 	iteration=iteration+xDirection;
-	ctx.clearRect(0, 0, 1800, 1000);
+	ctx.clearRect(0, 0, clientWidth, clientHeight);
 	ctx.save();
 	drawTennis(ctx, iteration);
 	ctx.restore();
@@ -91,15 +96,17 @@ function drawSingleIteration(ctx, iteration, color, shape){
 	var direction = directionInDegrees / 360 *(2 * Math.PI);
 	var startX = xScale * iteration;
 	var startY = y0 + (startX - x0) * Math.tan(direction);
-	if ((iteration > 300 && xDirection >0) || ((iteration < 10) && xDirection < 0))
+	if ((startX > clientWidth-5 && xDirection >0) || ((iteration < 1) && xDirection < 0))
 	{
+		console.log("change xDirection");
 		xDirection = -xDirection;
 		x0 = startX;
 		y0 = startY;
 		directionInDegrees = -directionInDegrees;
 	}
-	if((startY > 600 && (directionInDegrees * xDirection) > 0) || (startY < 20 && (directionInDegrees * xDirection) < 0))
+	if((startY > clientHeight-5 && (directionInDegrees * xDirection) > 0) || (startY < 10 && (directionInDegrees * xDirection) < 0))
 	{
+		console.log("change yDirection");
 		x0 = startX;
 		y0 = startY;
 		//ctx.translate(x0, y0);
@@ -114,6 +121,8 @@ function drawSingleIteration(ctx, iteration, color, shape){
 	ctx.lineWidth = lineWidth;
 	ctx.strokeStyle = color;
 	ctx.fillStyle = color;
+
+//console.log("drawing at: (" + startX + " , " + startY + " )");
 
 	if(shape == "triangle")
 	{
