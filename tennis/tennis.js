@@ -82,11 +82,11 @@ function drawFunction()
 function drawTennis(ctx, iteration){
 	if (colors == undefined)
 	{
-		colors =  Array.apply(null, Array(numberOfParts)).map(function () {getRandomColor()});
+		colors =  Array.apply(null, Array(numberOfParts)).map(function () { ColorUtil.getRandomColor()});
 	}
 
 	if(drawingColor == "rainbow"){
-		var color = getRandomColor();
+		var color = ColorUtil.getRandomColor();
 		let newLength = colors.push(color);
 		colors.shift();
 	}
@@ -94,9 +94,9 @@ function drawTennis(ctx, iteration){
 	for(i = 0; i < numberOfParts; i++){
 		item = item+xDirection;
 		if(drawingColor == "rainbow"){
-			drawSingleIteration(ctx, item, colors[i], drawingShape);
+			drawSingleIteration(ctx, item, colors[i], colors[(i+1)%numberOfParts], drawingShape);
 		}else{
-			drawSingleIteration(ctx, item, drawingColor, drawingShape);
+			drawSingleIteration(ctx, item, drawingColor, drawingColor, drawingShape);
 		}
 	}
 }
@@ -109,7 +109,7 @@ function getNewDirection(oldDirectionInDegrees){
    return newDirection;
 }
 
-function drawSingleIteration(ctx, iteration, color, shape){
+function drawSingleIteration(ctx, iteration, lineColor, fillColor, shape){
 	var direction = directionInDegrees / 360 *(2 * Math.PI);
 	var startX = xScale * iteration;
 	var startY = y0 + (startX - x0) * Math.tan(direction);
@@ -138,10 +138,10 @@ function drawSingleIteration(ctx, iteration, color, shape){
 
 	ctx.beginPath();
 	ctx.lineWidth = lineWidth;
-	ctx.strokeStyle = color;
-	ctx.fillStyle = color;
+	ctx.fillStyle = fillColor;
+	ctx.strokeStyle = lineColor;
 
-//console.log("drawing at: (" + startX + " , " + startY + " )");
+// console.log("drawing at: (" + startX + " , " + startY + " )");
 
 	if(shape == "triangle")
 	{
@@ -165,5 +165,6 @@ function drawSingleIteration(ctx, iteration, color, shape){
 		ctx.lineTo(startX, startY + 40);
 		ctx.lineTo(startX+40, startY);
 	}
+	ctx.fill();
 	ctx.stroke();
 }
