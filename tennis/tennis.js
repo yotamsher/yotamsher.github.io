@@ -1,17 +1,61 @@
+class Point {
+	constructor(x, y){
+		this.x = x;
+		this.y = y;
+	}
+}
+
+class tennisMovement{
+	startX;
+	startY;
+	directionInDegrees = getRandomInt(180) - 90;
+	static xScale = 10;
+	x0 = 0;
+	y0 = 350;
+	
+	getNewDirection(oldDirectionInDegrees){
+		var newDirection = -oldDirectionInDegrees + getRandomInt(6)-3;
+		if( Math.abs(newDirection) > 87 ){
+			newDirection= Math.sign(newDirection) * 87
+		}
+		return newDirection;
+	 }
+	 
+
+	handleMovement(iteration){
+		var direction = this.directionInDegrees / 360 *(2 * Math.PI);
+		this.startX = tennisMovement.xScale * iteration;
+		this.startY = this.y0 + (this.startX - this.x0) * Math.tan(direction);
+		if ((this.startX > clientWidth-5 && xDirection >0) || ((iteration < 1) && xDirection < 0))
+		{
+			console.log("change xDirection");
+			xDirection = -xDirection;
+			this.x0 = this.startX;
+			this.y0 = this.startY;
+			this.directionInDegrees = this.getNewDirection(this.directionInDegrees);
+			console.log("directionInDegrees="+this.directionInDegrees);
+		}
+		if((this.startY > clientHeight-5 && (this.directionInDegrees * xDirection) > 0) || (this.startY < 10 && (this.directionInDegrees * xDirection) < 0))
+		{
+			console.log("change yDirection");
+			this.x0 = this.startX;
+			this.y0 = this.startY;
+			this.directionInDegrees = this.getNewDirection(this.directionInDegrees);
+			console.log("directionInDegrees="+ this.directionInDegrees);
+		}
+	}
+}
+
+var tn = new tennisMovement();
+
 var iteration = 0
 
-var xScale = 10;
-var yScale = 350;
 var numberOfParts = 10;
-
-var x0 = 0;
-var y0 = 350;
 
 var myReq;
 
 var colors = undefined;
 
-var directionInDegrees = getRandomInt(180) - 90;
 var ctx;
 var clientWidth = 500;
 var clientHeight = 500;
@@ -60,7 +104,7 @@ function initAnimation(){
 	clientWidth = ctx.canvas.clientWidth;
 	//	ctx.translate(x0,y0);
 	console.log("canvas client area: " + clientWidth + "x" + clientHeight);
-	directionInDegrees = getRandomInt(170) - 85;
+	//directionInDegrees = getRandomInt(170) - 85;
 }
 
 function stopDrawing(){
@@ -101,41 +145,9 @@ function drawTennis(ctx, iteration){
 	}
 }
 
-function getNewDirection(oldDirectionInDegrees){
-   var newDirection = -oldDirectionInDegrees + getRandomInt(6)-3;
-   if( Math.abs(newDirection) > 87 ){
-	   newDirection= Math.sign(newDirection) * 87
-   }
-   return newDirection;
-}
-
 function drawSingleIteration(ctx, iteration, lineColor, fillColor, shape){
-	var direction = directionInDegrees / 360 *(2 * Math.PI);
-	var startX = xScale * iteration;
-	var startY = y0 + (startX - x0) * Math.tan(direction);
-	if ((startX > clientWidth-5 && xDirection >0) || ((iteration < 1) && xDirection < 0))
-	{
-		console.log("change xDirection");
-		xDirection = -xDirection;
-		x0 = startX;
-		y0 = startY;
-		directionInDegrees = getNewDirection(directionInDegrees);
-		console.log("directionInDegrees="+directionInDegrees);
-	}
-	if((startY > clientHeight-5 && (directionInDegrees * xDirection) > 0) || (startY < 10 && (directionInDegrees * xDirection) < 0))
-	{
-		console.log("change yDirection");
-		x0 = startX;
-		y0 = startY;
-		//ctx.translate(x0, y0);
-		directionInDegrees = getNewDirection(directionInDegrees);
-		console.log("directionInDegrees="+directionInDegrees);
-		//iteration = 0;
-	}
 
-	var endX = startX;
-	var endY = startY + 50;
-
+	tn.handleMovement(iteration);
 	ctx.beginPath();
 	ctx.lineWidth = lineWidth;
 	ctx.fillStyle = fillColor;
@@ -145,25 +157,29 @@ function drawSingleIteration(ctx, iteration, lineColor, fillColor, shape){
 
 	if(shape == "triangle")
 	{
-		ctx.moveTo(startX, startY);
-		ctx.lineTo(startX - 150, 350);
+		var endX = tn.startX;
+		var endY = tn.startY + 50;
+		ctx.moveTo(tn.startX, tn.startY);
+		ctx.lineTo(tn.startX - 150, 350);
 		ctx.lineTo(endX, endY);
-		ctx.lineTo(startX, startY);
+		ctx.lineTo(tn.startX, tn.startY);
 	}
 	else if(shape == "line")
 	{
-		ctx.moveTo(startX, startY);
+		var endX = tn.startX;
+		var endY = tn.startY + 50;
+		ctx.moveTo(tn.startX, tn.startY);
 		ctx.lineTo(endX, endY);
 	}
 	else if(shape == "circle"){
-		ctx.arc(startX, startY, 20,0, 2 * Math.PI) ;
+		ctx.arc(tn.startX, tn.startY, 20,0, 2 * Math.PI) ;
 	}
 	else if(shape == "heart"){
-		ctx.arc(startX-20, startY, 20, Math.PI, 2 * Math.PI) ;
-		ctx.arc(startX+20, startY, 20, Math.PI, 2 * Math.PI) ;
-		ctx.moveTo(startX-40, startY);
-		ctx.lineTo(startX, startY + 40);
-		ctx.lineTo(startX+40, startY);
+		ctx.arc(tn.startX-20, tn.startY, 20, Math.PI, 2 * Math.PI) ;
+		ctx.arc(tn.startX+20, tn.startY, 20, Math.PI, 2 * Math.PI) ;
+		ctx.moveTo(tn.startX-40, tn.startY);
+		ctx.lineTo(tn.startX, tn.startY + 40);
+		ctx.lineTo(tn.startX+40, tn.startY);
 	}
 	ctx.fill();
 	ctx.stroke();
