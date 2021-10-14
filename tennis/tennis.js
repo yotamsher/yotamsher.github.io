@@ -47,6 +47,7 @@ class tennisMovement{
 }
 
 var tn = new tennisMovement();
+var shapesContainer = new Shapes();
 
 var iteration = 0
 
@@ -155,32 +156,9 @@ function drawSingleIteration(ctx, iteration, lineColor, fillColor, shape){
 
 // console.log("drawing at: (" + startX + " , " + startY + " )");
 
-	if(shape == "triangle")
-	{
-		var endX = tn.startX;
-		var endY = tn.startY + 50;
-		ctx.moveTo(tn.startX, tn.startY);
-		ctx.lineTo(tn.startX - 150, 350);
-		ctx.lineTo(endX, endY);
-		ctx.lineTo(tn.startX, tn.startY);
-	}
-	else if(shape == "line")
-	{
-		var endX = tn.startX;
-		var endY = tn.startY + 50;
-		ctx.moveTo(tn.startX, tn.startY);
-		ctx.lineTo(endX, endY);
-	}
-	else if(shape == "circle"){
-		ctx.arc(tn.startX, tn.startY, 20,0, 2 * Math.PI) ;
-	}
-	else if(shape == "heart"){
-		ctx.arc(tn.startX-20, tn.startY, 20, Math.PI, 2 * Math.PI) ;
-		ctx.arc(tn.startX+20, tn.startY, 20, Math.PI, 2 * Math.PI) ;
-		ctx.moveTo(tn.startX-40, tn.startY);
-		ctx.lineTo(tn.startX, tn.startY + 40);
-		ctx.lineTo(tn.startX+40, tn.startY);
-	}
+	var shapeObj = shapesContainer.Get(shape);
+	shapeObj.draw(ctx, tn.startX, tn.startY);
+
 	ctx.fill();
 	ctx.stroke();
 }
